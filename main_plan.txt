@@ -1,0 +1,62 @@
+== Main Apps ==
+Account
+Dash Board
+Servers
+Images & APPs
+Security
+Networking
+API
+Logs
+Settings
+Support
+
+== Account ==
+-Billing
+-User Profile
+-Security
+
+== Dash Board ==
+-Create New Server (Button)
+-Some Statistical Graphics
+-Server List (Server Name, Image, IPs, Created At, Actions)
+
+== Servers ==
+-Create New Server (Button)
+-Server List (Server Name, Image, IPs, Created At, Actions)
+-Server Detail Page
+--Console
+--Graphs
+--Access
+--Power
+--Resize
+--Networking
+--Backups
+--Snapshots
+--History
+--Destroy
+
+== Images & APPs ==
+-Images
+-Applications
+-Backups
+-Snapshots
+
+== Security ==
+-SSH Key
+-Firwall
+
+== Networking ==
+-Private IPs
+-Floating Public IPs
+-Domains
+-PTR Records
+
+== API ==
+-Tokens
+-APPs
+-Access
+
+== Settings ==
+-Notification
+
+== Support ==
