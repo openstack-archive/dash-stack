@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+
 import dateutil.parser
-from app import app
+from dash import dash
 
 
 class User(object):
