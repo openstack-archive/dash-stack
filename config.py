@@ -20,16 +20,19 @@ class DevelopmentConfig(Config):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
-        
+        ('mysql://root:Polo1043@localhost/dashDev')
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data-test.sqlite')
+        ('mysql://root:Polo1043@localhost/dashTest')
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
         
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+        ('mysql://root:Polo1043@localhost/dash')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
         
 config = {
     'development': DevelopmentConfig,
