@@ -233,7 +233,9 @@
                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                   </div>
                   <div class="pull-right">
-                    <a href="{{ url_for('.login') }}" class="btn btn-default btn-flat">Sign out</a>
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-default btn-flat">Sign out</a>
+                    {% endif %}
                   </div>
                 </li>
               </ul>
@@ -272,7 +274,7 @@
               </a>
               <ul class="treeview-menu">
                 <li>
-                  <a href="{{ url_for('.login') }}">
+                  <a href="{{ url_for('auth.login') }}">
                     <i class="fa fa-circle-o"></i>
                     Login
                   </a>
