@@ -2,7 +2,7 @@
 
 {% block title %}Register{% endblock %}
 {% block description %}Register a new account{% endblock %}
-{% block bodytag %}register-page{% endblock %}
+{% block bodytag %}login-page{% endblock %}
 
 {% block body %}
 
@@ -24,35 +24,55 @@
             {% endif %}
           {% endwith %}
         {# Render the login form. #}
-        <form action="" method="post" name="register">
+        <form action="{{ url_for('auth.register') }}" method="post" name="register">
         {{ form.hidden_tag() }}
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Full name">
+            <input type="email" name="email" class="form-control" placeholder="Email">
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            {% if form.email.errors %}
+              <span class="text-red">{% for error in form.email.errors %} {{ error }} {% endfor %}</span>
+            {% endif %}
+          </div>
+          <div class="form-group has-feedback">
+            <input type="text" name="username" class="form-control" placeholder="User name">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            {% if form.username.errors %}
+              <span class="text-red">{% for error in form.username.errors %} {{ error }} {% endfor %}</span>
+            {% endif %}
+          </div>
+          <div class="form-group has-feedback">
+            <input type="text" name="full_name" class="form-control" placeholder="Full name">
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="Email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="password" name="password" class="form-control" placeholder="Password">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            {% if form.password.errors %}
+              <span class="text-red">{% for error in form.password.errors %} {{ error }} {% endfor %}</span>
+            {% endif %}
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Retype password">
+            <input type="password" name="password2" class="form-control" placeholder="Retype password">
             <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            {% if form.password2.errors %}
+              <span class="text-red">{% for error in form.password2.errors %} {{ error }} {% endfor %}</span>
+            {% endif %}
           </div>
           <div class="row">
             <div class="col-xs-8 col-xs-offset-0">
               <div class="checkbox">
                 <label>
-                  <input type="checkbox"> I agree to the <a href="#">terms</a>
+                  <input type="checkbox" name="terms"> I agree to the <a href="#">terms</a>
                 </label>
+                {% if form.terms.errors %}
+                  <br />
+                  <span class="text-red">{% for error in form.terms.errors %} {{ error }} {% endfor %}</span>
+                {% endif %}
               </div>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+              <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat" value="Register">Register</button>
             </div>
             <!-- /.col -->
           </div>
@@ -66,8 +86,12 @@
             Google+</a>
         </div>
         -->
-
-        <a href="login.html" class="text-center">I already have a membership</a>
+        <div class="row">
+          <div class="col-xs-12 text-center">
+            <hr />
+            <a href="{{ url_for('auth.login') }}">I already have a membership</a>
+          </div>
+        </div>
       </div>
       <!-- /.form-box -->
     </div>

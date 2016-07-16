@@ -24,6 +24,10 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     WTF_CSRF_ENABLED = True
     SECRET_KEY = 'you-will-never-guess'
+    # Debug configuration
+    FLASK_DEBUG = True
+    SQLALCHEMY_ECHO = True
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
     
 class TestingConfig(Config):
     TESTING = True

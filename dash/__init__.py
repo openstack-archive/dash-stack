@@ -5,13 +5,16 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_debugtoolbar import DebugToolbarExtension
 
 from config import config
+
 
 AdminLTE = AdminLTE()
 mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
+toolbar = DebugToolbarExtension()
 
 # initialize flask_login
 login_manager = LoginManager()
@@ -34,6 +37,7 @@ def create_app(config_name):
     moment.init_app(dash)
     db.init_app(dash)
     login_manager.init_app(dash)
+    toolbar.init_app(dash)
     
     
     # attach routes and custom error pages here
