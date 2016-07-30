@@ -32,6 +32,26 @@ class ViewFunctionsTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
     
+    # test user registration
+    def user_register(self, email, username, full_name, password, password2, terms):
+        return self.app_test_client.post('/auth/register',
+            data=dict(
+            email=email,
+            username=username,
+            full_name=full_name,
+            password=password,
+            password2=password2,
+            terms=terms), follow_redirects=True)
+            
+    def test_user_registration(self):
+        rv = self.user_register('test2@dash-stack.org',
+                                'test2',
+                                'Dash Stack the Second',
+                                'test2',
+                                'test2',
+                                True)
+        assert 'You can now login.' in rv.data
+        
     # user login function
     def login(self, email, password):
         return self.app_test_client.post('/auth/login',
@@ -47,12 +67,13 @@ class ViewFunctionsTestCase(unittest.TestCase):
     def test_login_logout(self):
         rv = self.login('test@dash-stack.org', 'test')
         assert 'Dash Stack - Web Developer' in rv.data
-        #rv = self.logout()
-        #assert 'You were logged out' in rv.data
-        #rv = self.login('testx@dash-stack.org', 'test')
-        #assert 'Invalid username' in rv.data
-        #rv = self.login('test@dash-stack.org', 'testx')
-        #assert 'Invalid password' in rv.data
+        rv = self.logout()
+        assert 'You have been logged out.' in rv.data
+        rv = self.login('testx@dash-stack.org', 'test')
+        assert 'Invalid username or password.' in rv.data
+        rv = self.login('test@dash-stack.org', 'testx')
+        assert 'Invalid username or password.' in rv.data
+        
         
 if __name__ == '__main__':
     unittest.main()
