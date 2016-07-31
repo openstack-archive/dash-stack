@@ -50,4 +50,8 @@ def create_app(config_name):
     from .auth import auth as auth_blueprint
     dash.register_blueprint(auth_blueprint, url_prefix='/auth')
     
+    # user profile application
+    from .profile import profile as profile_blueprint
+    dash.register_blueprint(profile_blueprint, url_prefix='/profile')
+    
     return dash

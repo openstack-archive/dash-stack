@@ -230,7 +230,7 @@
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="{{ url_for('profile.index') }}" class="btn btn-default btn-flat">Profile</a>
+                    <a href="#" class="btn btn-default btn-flat">Profile</a>
                   </div>
                   <div class="pull-right">
                     {% if current_user.is_authenticated %}
@@ -261,7 +261,7 @@
           <ul class="sidebar-menu">
           <li class="header">HEADER</li>
             <li class="active">
-              <a href="{{ url_for('.index') }}">
+              <a href="{{ url_for('main.index') }}">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
               </a>
             </li>
@@ -280,7 +280,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="{{ url_for('.lockscreen') }}">
+                  <a href="{{ url_for('main.lockscreen') }}">
                     <i class="fa fa-circle-o"></i>
                     Lockscreen
                   </a>
@@ -292,108 +292,113 @@
         <!-- /.sidebar -->
 {%- endblock sidebar %}
 {% block content_header -%}
-          <h1>
-            Dashboard
-            <small>Preview page</small>
-          </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
-          </ol>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        User Profile of {{ current_user.full_name }}
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Examples</a></li>
+        <li class="active">User profile</li>
+      </ol>
+    </section>
 {%- endblock content_header %}
 {% block content -%}
-          <h4 class="page-header">
-            AdminLTE Small Boxes
-            <small>Small boxes are used for viewing statistics. To create a small box use the <code>widgets.small_box</code> widget.</small>
-          </h4>
-          <!-- Small boxes (Stat box) -->
-          <div class="row">
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li><a href="#activity" data-toggle="tab">Activity</a></li>
+              <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
+              <li class="active"><a href="#settings" data-toggle="tab">Settings</a></li>
+            </ul>
+            <div class="tab-content">
+            
+              <div class="tab-pane" id="activity">
+                <p>User activity log...</p>
+              </div>
+              
+              <div class="active tab-pane" id="settings">
+                <h4>Change Your Password</h4>
+                <form class="form-horizontal" action="" method="post">
+                <input type="hidden" name="type" value="formChangePassword">
+                {{ formChangePassword.hidden_tag() }}
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <input type="password" name="old_password" class="form-control" id="old_password" placeholder="Old Password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <input type="password" name="password" class="form-control" id="password" placeholder="New Password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <input type="password" name="password2" class="form-control" id="password2" placeholder="New Password Again">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <button type="submit" class="btn btn-primary">Change</button>
+                    </div>
+                  </div>
+                </form>
+                <hr />
+                <h4>Change Your User Name</h4>
+                <form class="form-horizontal" method="post">
+                {{ formChangeUserName.hidden_tag() }}
+                <input type="hidden" name="type" value="formChangeUserName">
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <input type="text" name="username" class="form-control" 
+                      value="{{ current_user.username }}" id="username" placeholder="Your New Username">
+                      {% if formChangeUserName.username.errors %}
+                        <span class="text-red">{% for error in formChangeUserName.username.errors %} {{ error }} {% endfor %}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                  </div>                
+                </form>
+                <hr />
+                <h4>Update Your Profile</h4>
+                <form class="form-horizontal" method="post">
+                {{ formUpdateProfile.hidden_tag() }}
+                  <input type="hidden" name="type" value="formUpdateProfile">
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <input type="text" name="full_name" class="form-control" value="{{ current_user.full_name }}" id="full_name" placeholder="Your New Name">
+                      {% if formUpdateProfile.full_name.errors %}
+                        <span class="text-red">{% for error in formUpdateProfile.full_name.errors %} {{ error }} {% endfor %}</span>
+                      {% endif %}
+                    </div>
+                  </div> 
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                  </div>                
+                </form>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
 
-            {{
-              widgets.small_box(
-                bgcolor="bg-aqua",
-                header=150,
-                body="New Orders",
-                iconclass="ion ion-bag",
-                footerlink="#"
-              )
-            }}
+    </section>
+    <!-- /.content -->
 
-            {{
-              widgets.small_box(
-                bgcolor="bg-green",
-                header=53,
-                body="Bounce Rate",
-                iconclass="ion ion-stats-bars",
-                footerlink="#"
-              )
-            }}
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-yellow",
-                header=43,
-                body="User Registrations",
-                iconclass="ion ion-person-add",
-                footerlink="#"
-              )
-            }}
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-red",
-                header=65,
-                body="Unique Visitors",
-                iconclass="ion ion-pie-graph",
-                footerlink="#"
-              )
-            }}
-
-          </div><!-- /.row -->
-
-          <!-- Small boxes (Stat box) -->
-          <div class="row">
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-blue",
-                header=230,
-                body="Sales",
-                iconclass="ion ion-ios7-cart-outline",
-                footerlink="#"
-              )
-            }}
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-purple",
-                header=80,
-                percentage=True,
-                body="Conversion Rate",
-                iconclass="ion ion-ios7-briefcase-outline",
-                footerlink="#"
-              )
-            }}
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-teal",
-                header=14,
-                body="Notifications",
-                iconclass="ion ion-ios7-alarm-outline",
-                footerlink="#"
-              )
-            }}
-
-            {{
-              widgets.small_box(
-                bgcolor="bg-maroon",
-                header=160,
-                body="Products",
-                iconclass="ion ion-ios7-pricetag-outline",
-                footerlink="#"
-              )
-            }}
-
-          </div><!-- /.row -->
 {%- endblock content %}
