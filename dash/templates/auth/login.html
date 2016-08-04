@@ -41,10 +41,15 @@
             <button type="submit" class="btn btn-primary btn-block btn-flat">Log In</button>
           </div>
         </div>
+        <div class="row">
+          <div class="col-xs-12 text-left">
+            <p><a href="{{ url_for('auth.password_reset_request') }}">Forgotten Passwords</a></p>
+          </div>
+        </div>
       </form>
+      <hr />
       <div class="row">
         <div class="col-xs-12 text-center">
-          <hr />
           <h4 class="box-title"> If you do not have account?</h4>
           <a href="{{ url_for('auth.register') }}">
             <button type="button" class="btn btn-block btn-danger btn-flat">Register Here</button>
