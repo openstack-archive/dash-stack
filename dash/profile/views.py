@@ -6,7 +6,8 @@ from . import profile
 from .. import db
 from ..models import User
 from ..email import send_email
-from .forms import ChangePasswordForm, UpdateProfileForm, ChangeUserNameForm
+from .forms import ChangePasswordForm, UpdateProfileForm, ChangeUserNameForm, \
+    ChangeEmailForm
 
 
 @profile.route('/', methods=['GET', 'POST'])
@@ -15,6 +16,7 @@ def index():
     formChangePassword = ChangePasswordForm()
     formChangeUserName = ChangeUserNameForm()
     formUpdateProfile = UpdateProfileForm()
+    formChangeEmail = ChangeEmailForm()
     
     if formChangePassword.type.data == 'formChangePassword':
         if formChangePassword.validate_on_submit():
@@ -40,7 +42,30 @@ def index():
             db.session.add(current_user)
             flash('formUpdateProfile')
             return redirect(url_for('profile.index'))
+    if formChangeEmail.type.data == 'formChangeEmail':
+        if formChangeEmail.validate_on_submit():
+            if current_user.verify_password(formChangeEmail.password.data):
+                new_email = formChangeEmail.email.data
+                token = current_user.generate_email_change_token(new_email)
+                send_email(new_email, 'Confirm your email address',
+                       'profile/email/change_email',
+                       user=current_user, token=token)
+                flash('An email with instructions to confirm your new email '
+                      'address has been sent to you.')
+                return redirect(url_for('profile.index'))
+            else:
+                flash('Invalid email address or password.')
     return render_template('profile/index.html',
                             formChangePassword=formChangePassword,
                             formChangeUserName=formChangeUserName,
-                            formUpdateProfile=formUpdateProfile)
+                            formUpdateProfile=formUpdateProfile,
+                            formChangeEmail=formChangeEmail)
+                            
+@profile.route('/change-email/<token>')
+@login_required
+def change_email(token):
+    if current_user.change_email(token):
+        flash('Your email address has been updated.')
+    else:
+        flash('Invalid request.')
+    return redirect(url_for('profile.index'))

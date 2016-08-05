@@ -30,9 +30,10 @@ class ChangeUserNameForm(Form):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
             
-class UpdateEmailForm(Form):
-    email = StringField('Email', validators=[Required(), Length(1, 128),
+class ChangeEmailForm(Form):
+    email = StringField('New Email', validators=[Required(), Length(1, 128),
                                              Email()])
+    password = PasswordField('Password', validators=[Required()])
     type = StringField()
                                              
     def validate_email(self, field):
