@@ -11,8 +11,8 @@ def send_async_email(dash, msg):
 
 def send_email(to, subject, template, **kwargs):
     dash = current_app._get_current_object()
-    msg = Message(dash.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ' ' + subject,
-                  sender=dash.config['FLASKY_MAIL_SENDER'], recipients=[to])
+    msg = Message(dash.config['DASH_MAIL_SUBJECT_PREFIX'] + ' ' + subject,
+                  sender=dash.config['DASH_MAIL_SENDER'], recipients=[to])
     msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template(template + '.html', **kwargs)
     thr = Thread(target=send_async_email, args=[dash, msg])
