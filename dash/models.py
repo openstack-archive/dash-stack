@@ -5,7 +5,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from flask import current_app
 
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 
 from . import db
 from . import login_manager
@@ -38,6 +38,7 @@ class Permission:
     MODIFY_TENANT_QUOTA = 0xB4
     
     # administrator permissions
+    ADMINISTER = 0xff
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -175,8 +176,24 @@ class User(UserMixin, db.Model):
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
                 
+    def can(self, permissions):
+        return self.role is not None and \
+            (self.role.permissions & permissions) == permissions
+        
+        def is_administrator(self):
+            return self.can(Permission.ADMINISTER)
+                
     def __repr__(self):
         return '<User %r>' % self.username
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+    
+    def is_administrator():
+        return False
+
+login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):
