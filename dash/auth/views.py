@@ -50,7 +50,8 @@ def register():
                     full_name=form.full_name.data,
                     password=form.password.data,
                     avatar="/static/img/user2-160x160.jpg",
-                    created_at=datetime.datetime.now())
+                    created_at=datetime.datetime.now(),
+                    role_id=2)
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()

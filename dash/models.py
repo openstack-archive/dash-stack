@@ -10,35 +10,6 @@ from flask_login import UserMixin, AnonymousUserMixin
 from . import db
 from . import login_manager
 
-# user roles
-class Permission:
-    ## user permissions
-    # instance management
-    LAUNCH_INSTANCE = 0x1A
-    REMOVE_INSTANCE = 0x2A
-    MANAGE_INSTANCE = 0x3A
-    LIST_INSTANCE = 0x4A
-    
-    ## reseller permissions
-    # Users Management
-    CREATE_USER = 0x1B
-    MANAGE_USER = 0x2B
-    DELETE_USER = 0x3B
-    LIST_USER = 0x4B
-    SUSPEND_USER = 0x5B
-    UNSUSPEND_USER = 0x6B
-    
-    # Tenant Management
-    CREATE_TENANT = 0x7B
-    MANAGE_TENANT = 0x8B
-    DELETE_TENANT = 0x9B
-    LIST_TENANT = 0xB1
-    SUSPEND_TENANT = 0xB2
-    UNSUSPEND_TENANT = 0xB3
-    MODIFY_TENANT_QUOTA = 0xB4
-    
-    # administrator permissions
-    ADMINISTER = 0xff
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -48,39 +19,6 @@ class Role(db.Model):
     default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
     users = db.relationship('User', backref='role', lazy='dynamic')
-    
-    # creates roles and permissions in db
-    @staticmethod
-    def insert_roles():
-        roles = {
-            'User': (Permission.LAUNCH_INSTANCE |
-                     Permission.REMOVE_INSTANCE |
-                     Permission.MANAGE_INSTANCE |
-                     Permission.LIST_INSTANCE, True),
-            'Reseller': (Permission.CREATE_USER |
-                          Permission.MANAGE_USER |
-                          Permission.DELETE_USER |
-                          Permission.LIST_USER |
-                          Permission.SUSPEND_USER |
-                          Permission.UNSUSPEND_USER |
-                          # tenant management
-                          Permission.CREATE_TENANT |
-                          Permission.MANAGE_TENANT |
-                          Permission.DELETE_TENANT |
-                          Permission.LIST_TENANT |
-                          Permission.SUSPEND_TENANT |
-                          Permission.UNSUSPEND_TENANT |
-                          Permission.MODIFY_TENANT_QUOTA, False),
-            'Administrator': (0xff, False)
-        }
-        for r in roles:
-            role = Role.query.filter_by(name=r).first()
-            if role is None:
-                role = Role(name=r)
-            role.permissions = roles[r][0]
-            role.default = roles[r][1]
-            db.session.add(role)
-        db.session.commit()
         
     def __repr__(self):
         return '<Role %r>' % self.name
@@ -166,34 +104,9 @@ class User(UserMixin, db.Model):
         self.email = new_email
         db.session.add(self)
         return True
-        
-    # Role assignment
-    def __init__(self, **kwargs):
-        super(User, self).__init__(**kwargs)
-        if self.role is None:
-            if self.email == current_app.config['DASH_ADMIN']:
-                self.role = Role.query.filter_by(permissions=0xff).first()
-            if self.role is None:
-                self.role = Role.query.filter_by(default=True).first()
-                
-    def can(self, permissions):
-        return self.role is not None and \
-            (self.role.permissions & permissions) == permissions
-        
-        def is_administrator(self):
-            return self.can(Permission.ADMINISTER)
                 
     def __repr__(self):
         return '<User %r>' % self.username
-
-class AnonymousUser(AnonymousUserMixin):
-    def can(self, permissions):
-        return False
-    
-    def is_administrator():
-        return False
-
-login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):

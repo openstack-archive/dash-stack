@@ -1,0 +1,23 @@
+{% extends "adminlte/base.html" %}
+{% import "adminlte/layout.html" as layout with context %}
+{% import "adminlte/widgets.html" as widgets with context %}
+
+{% block navbar %}
+
+  {% include "navbar.html" %}
+
+{%- endblock navbar %}
+
+
+{% block sidebar -%}
+
+  {% include 'sidebar.html' %}
+
+  {% include 'admin/sidebar_menu.html' %}
+
+{%- endblock sidebar %}
+
+
+{% block content_header -%}
+  {% include 'admin/content_header.html' %}
+{%- endblock content_header %}

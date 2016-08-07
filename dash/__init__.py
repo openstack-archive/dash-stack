@@ -54,4 +54,8 @@ def create_app(config_name):
     from .profile import profile as profile_blueprint
     dash.register_blueprint(profile_blueprint, url_prefix='/profile')
     
+    # admin application
+    from .admin import admin as admin_blueprint
+    dash.register_blueprint(admin_blueprint, url_prefix='/admin')
+    
     return dash

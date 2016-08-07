@@ -9,6 +9,8 @@ API
 Logs
 Settings
 Support
+Admin
+Reseller
 
 == Account ==
 -Billing
@@ -60,3 +62,17 @@ Support
 -Notification
 
 == Support ==
+
+== Admin Area ==
+-Create user
+-Delete user
+-Edit user
+-Suspend user
+-Unsuspend user
+
+-Config page
+
+
+== Reseller ==
+-All the actions regarding its own account
+-All the actions regarding its sub-accounts
