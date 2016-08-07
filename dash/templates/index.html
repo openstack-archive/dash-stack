@@ -13,7 +13,7 @@
 
   {% include 'sidebar.html' %}
   
-  {% if current_user.role_id == 1 %}
+  {% if current_user.role.name == "admin" %}
     {% include 'admin/sidebar_menu.html' %}
   {% endif %}
 

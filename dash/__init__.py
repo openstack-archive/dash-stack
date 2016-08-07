@@ -6,6 +6,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
+from flask.ext.principal import Principal
 
 from config import config
 
@@ -15,6 +16,7 @@ mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
 toolbar = DebugToolbarExtension()
+Principal = Principal()
 
 # initialize flask_login
 login_manager = LoginManager()
@@ -37,6 +39,7 @@ def create_app(config_name):
     moment.init_app(dash)
     db.init_app(dash)
     login_manager.init_app(dash)
+    Principal.init_app(dash)
     toolbar.init_app(dash)
     
     

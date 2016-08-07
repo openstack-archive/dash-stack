@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, login_required, \
     current_user
 from . import auth
 from .. import db
-from ..models import User
+from ..models import User, Role
 from ..email import send_email
 from .forms import LoginForm, RegistrationForm, PasswordResetRequestForm, \
     PasswordResetForm
@@ -45,13 +45,14 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+        r = Role.query.filter_by(default=True).first()
         user = User(email=form.email.data,
                     username=form.username.data,
                     full_name=form.full_name.data,
                     password=form.password.data,
                     avatar="/static/img/user2-160x160.jpg",
                     created_at=datetime.datetime.now(),
-                    role_id=2)
+                    role_id=r.id)
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()

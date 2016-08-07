@@ -206,7 +206,7 @@
                 <li class="user-header bg-light-blue">
                   <img src="{{ current_user.avatar }}" class="img-circle" alt="User Image" />
                   <p>
-                    {{ current_user.full_name }} - Web Developer
+                    {{ current_user.full_name }} - role : {{ current_user.role.name }}
                     <small>Member since {{ current_user.created_at.strftime("%b. %Y") }}</small>
                   </p>
                 </li>

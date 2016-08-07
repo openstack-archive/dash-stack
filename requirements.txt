@@ -15,3 +15,4 @@ Werkzeug
 alembic
 blinker
 itsdangerous
+flask-principal
