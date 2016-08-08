@@ -1,7 +1,7 @@
 <ul class="sidebar-menu">
 <li class="header">Admin Menu</li>
   <li>
-    <a href="/admin/index">
+    <a href="{{ url_for('admin.index') }}">
       <i class="fa fa-dashboard"></i> <span>Admin Dashboard</span>
     </a>
   </li>
@@ -20,7 +20,7 @@
         </a>
       </li>
       <li>
-        <a href="">
+        <a href="{{ url_for('admin.list_users') }}">
           <i class="fa fa-list"></i>
           List Users
         </a>
