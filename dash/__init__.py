@@ -6,7 +6,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
-from flask.ext.principal import Principal
+from flask_principal import Principal
 
 from config import config
 

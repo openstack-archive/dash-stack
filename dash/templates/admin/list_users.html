@@ -2,6 +2,9 @@
 {% import "adminlte/layout.html" as layout with context %}
 {% import "adminlte/widgets.html" as widgets with context %}
 
+{% block title %}Admin - {{ title }}{% endblock %}
+{% block description %}{{ block_description }}{% endblock %}
+
 {% block navbar %}
 
   {% include "navbar.html" %}
@@ -24,13 +27,9 @@
 
 {% block content -%}
     <!-- Main content --> 
-    <section class="content">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">User List</h3>
-            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example2" class="table table-bordered table-hover">
@@ -52,7 +51,9 @@
                   <td>{{ user.email }}</td>
                   <td>{{ user.created_at }}</td>
                   <td>{{ user.role.name }}</td>
-                  <td>Edit</td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_user_admin', id=user.id) }}">Edit</a>
+                  </td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -75,7 +76,5 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-    </section>
-    <!-- /.content -->
 
 {%- endblock content %}

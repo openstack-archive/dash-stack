@@ -1,6 +1,8 @@
-<section class="content-header">
-    <h1>
-      Admin Dashboard
-      <small>Dashboard for Administrators</small>
-    </h1>
-</section>
+<h1>
+    {{ title }}
+    <small>{{ block_description }}</small>
+</h1>
+<ol class="breadcrumb">
+    <li><a href="{{ url_for('admin.index') }}"><i class="fa fa-dashboard"></i>Admin Home</a></li>
+    <li>{{ title }}</li>
+</ol>
