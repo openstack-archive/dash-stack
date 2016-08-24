@@ -36,40 +36,42 @@
                 <form class="form-horizontal" action="" method="post">
                 {{ form.hidden_tag() }}
                   <div class="form-group has-feedback">
-                    <input type="email" name="email" class="form-control" placeholder="New Email" value=" {{ user.email }} ">
+                    <input type="email" name="email" class="form-control" placeholder="User Email" value="{{ request.form['email'] }}">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     {% if form.email.errors %}
                       <span class="text-red">{% for error in form.email.errors %} {{ error }} {% endfor %}</span>
                     {% endif %}
                   </div>
                   <div class="form-group has-feedback">
-                    <input type="text" name="username" class="form-control" placeholder="User name" value="{{ user.username }}">
+                    <input type="text" name="username" class="form-control" placeholder="User name" value="{{ request.form['username'] }}">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     {% if form.username.errors %}
                       <span class="text-red">{% for error in form.username.errors %} {{ error }} {% endfor %}</span>
                     {% endif %}
                   </div>
                   <div class="form-group has-feedback">
-                    <input type="text" name="full_name" class="form-control" placeholder="Full name" value="{{ user.full_name}}">
+                    <input type="text" name="full_name" class="form-control" placeholder="Full name" value="{{ request.form['full_name'] }}">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                   </div>
                   <div class="form-group has-feedback">
-                    <label>User Role</label>
-                    <select name="role" class="form-control">
-                      {% for role in roles %}
-                      <option value="{{ role.id }}" {% if role.id == user.role_id %} selected {% endif %} >{{ role.name }}</option>
-                      {% endfor %}
-                    </select>
-                    <span class="glyphicon glyphicon-signal form-control-feedback"></span>
-                    {% if form.role.errors %}
-                      <span class="text-red">{% for error in form.role.errors %} {{ error }} {% endfor %}</span>
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    {% if form.password.errors %}
+                      <span class="text-red">{% for error in form.password.errors %} {{ error }} {% endfor %}</span>
+                    {% endif %}
+                  </div>
+                  <div class="form-group has-feedback">
+                    <input type="password" name="password2" class="form-control" placeholder="Retype password">
+                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                    {% if form.password2.errors %}
+                      <span class="text-red">{% for error in form.password2.errors %} {{ error }} {% endfor %}</span>
                     {% endif %}
                   </div>
                   <div class="row">
                     <div class="col-xs-8 col-xs-offset-0">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" name="confirmed" {% if user.confirmed %} checked  {% endif %} > Confirmed?
+                          <input type="checkbox" name="confirmed"> Confirmed?
                         </label>
                         {% if form.confirmed.errors %}
                           <br />
@@ -79,7 +81,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                      <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat" value="Update">Update</button>
+                      <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat" value="Update">Create</button>
                     </div>
                     <!-- /.col -->
                   </div>

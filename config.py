@@ -14,6 +14,7 @@ class Config:
         
 class DevelopmentConfig(Config):
     DEBUG = True
+    DEBUG_TB_ENABLED = True
     MAIL_SERVER = 'localhost'
     MAIL_PORT = 25
     MAIL_USE_TLS = True
