@@ -15,6 +15,7 @@ class EditUserAdminForm(Form):
     full_name = StringField('Full name', validators=[Required(), Length(1, 255)])
     role = SelectField('Role', coerce=int)
     confirmed = BooleanField('Confirmed')
+    suspended = BooleanField('Suspended')
     
     def __init__(self, user, *args, **kwargs):
         super(EditUserAdminForm, self).__init__(*args, **kwargs)

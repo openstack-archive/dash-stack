@@ -1,0 +1,30 @@
+{% extends "adminlte/base_without_nav.html" %}
+
+{% block title %}Confirm Account{% endblock %}
+{% block description %}Your account has been suspended!{% endblock %}
+{% block bodytag %}login-page{% endblock %}
+
+{% block body %}
+
+  <div class="login-box">
+    <div class="login-logo">
+      <strong>-</strong> stack
+    </div>
+    <div class="login-box-body">
+      {# Display errors (if there are any). #}
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      <h3>Hello {{ current_user.username }}</h3>
+      <h4>Your account has been suspended!</h4>
+      <p>Please contact our support department for details.</p>
+    </div>
+  </div>
+
+{% endblock %}

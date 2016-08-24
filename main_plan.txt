@@ -64,13 +64,21 @@ Reseller
 == Support ==
 
 == Admin Area ==
+--User Management--
 -Create user
 -Delete user
 -Edit user
 -Suspend user
 -Unsuspend user
+-List User
 
--Config page
+--Provider Management--
+-Create provider
+-Edit provider
+-Delete provider
+-Disable provider
+-Enable provider
+-List providers
 
 
 == Reseller ==

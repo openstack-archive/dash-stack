@@ -66,7 +66,7 @@
                     {% endif %}
                   </div>
                   <div class="row">
-                    <div class="col-xs-8 col-xs-offset-0">
+                    <div class="col-xs-4 col-xs-offset-0">
                       <div class="checkbox">
                         <label>
                           <input type="checkbox" name="confirmed" {% if user.confirmed %} checked  {% endif %} > Confirmed?
@@ -74,6 +74,17 @@
                         {% if form.confirmed.errors %}
                           <br />
                           <span class="text-red">{% for error in form.confirmed.errors %} {{ error }} {% endfor %}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="col-xs-4 col-xs-offset-0">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="suspended" {% if user.suspended %} checked  {% endif %} > Suspended?
+                        </label>
+                        {% if form.suspended.errors %}
+                          <br />
+                          <span class="text-red">{% for error in form.suspended.errors %} {{ error }} {% endfor %}</span>
                         {% endif %}
                       </div>
                     </div>

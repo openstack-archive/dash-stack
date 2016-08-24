@@ -65,6 +65,7 @@ def edit_user_admin(id):
         user.full_name = form.full_name.data
         user.role = Role.query.get(form.role.data)
         user.confirmed = form.confirmed.data
+        user.suspended = form.suspended.data
         db.session.add(user)
         flash('The profile has been updated.')
         return redirect(url_for('.edit_user_admin', id=user.id))

@@ -14,8 +14,13 @@ def before_request():
     if current_user.is_authenticated \
             and not current_user.confirmed \
             and request.endpoint[:5] != 'auth.' \
-            and request.endpoint != 'static':
+            and '/static/' not in request.path:
         return redirect(url_for('auth.unconfirmed'))
+    if current_user.is_authenticated \
+            and current_user.suspended \
+            and request.endpoint[:5] != 'auth.' \
+            and '/static/' not in request.path:
+        return redirect(url_for('auth.suspended'))
         
 @auth.route('/unconfirmed')
 def unconfirmed():
@@ -23,6 +28,12 @@ def unconfirmed():
         return redirect(url_for('main.index'))
     return render_template('auth/unconfirmed.html')
 
+@auth.route('/suspended')
+def suspended():
+    if current_user.is_anonymous or not current_user.suspended:
+        return redirect(url_for('main.index'))
+    return render_template('auth/suspended.html')
+    
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()

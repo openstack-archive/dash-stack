@@ -35,6 +35,7 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     confirmed = db.Column(db.Boolean, default=False)
+    suspended = db.Column(db.Boolean, default=False)
                 
     @property
     def password(self):
