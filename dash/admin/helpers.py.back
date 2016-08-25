@@ -1,0 +1,86 @@
+import requests, json
+
+from ..models import Provider
+
+# OpenStack Identity V3 API Calls
+class Identity:
+    def auth_unscoped(self, auth_url, username, password, domain):
+        payload = {
+                      "auth": {
+                          "identity": {
+                              "methods": [
+                                  "password"
+                              ],
+                              "password": {
+                                  "user": {
+                                      "name": username,
+                                      "domain": {
+                                          "id": domain
+                                      },
+                                      "password": password
+                                  }
+                              }
+                          }
+                      }
+                  }
+        auth_url = "%s/v3/auth/tokens" %(auth_url)
+        resp = requests.session()
+        resp = resp.post(auth_url, data=json.dumps(payload))
+        return resp
+    
+    def auth_unscoped_token(self, auth_url, provider_id):
+        provider = Provider.query.get_or_404(provider_id)
+        payload =   {
+                        "auth": {
+                            "identity": {
+                                "methods": [
+                                    "token"
+                                ],
+                                "token": {
+                                    "id": provider.x_subject_token
+                                }
+                            }
+                        }
+                    }
+        auth_url = "%s/v3/auth/tokens" %(auth_url)
+        resp = requests.session()
+        resp = resp.post(auth_url, data=json.dumps(payload))
+        return resp
+        
+    def auth_scoped(self, auth_url, username, password, domain):
+        payload =   {
+                        "auth": {
+                            "identity": {
+                                "methods": [
+                                    "password"
+                                ],
+                                "password": {
+                                    "user": {
+                                        "name": username,
+                                        "password": password
+                                    }
+                                }
+                            },
+                            "scope": {
+                                "project": {
+                                    "name": project
+                                }
+                            }
+                        }
+                    }
+        auth_url = "%s/v3/auth/tokens" %(auth_url)
+        resp = requests.post(auth_url, data=json.dumps(payload))
+        return resp
+        
+    def auth_validate_show_token(self, auth_url, provider_id):
+        provider = Provider.query.get_or_404(provider_id)
+        headers =  {'X-Auth-Token': provider.x_subject_token , 'X-Subject-Token': provider.x_subject_token}
+        auth_url = "%s/v3/auth/tokens" % (auth_url)
+        resp = requests.get(auth_url, headers=headers)
+        return resp
+        
+    def list_projects(self, url, x_subject_token):
+        headers =  {'X-Auth-Token': x_subject_token}
+        auth_url = "%s/v3/projects" % (url)
+        resp = requests.get(auth_url, headers=json.dumps(headers))
+        return resp

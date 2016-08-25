@@ -1,0 +1,84 @@
+{% extends "adminlte/base.html" %}
+{% import "adminlte/layout.html" as layout with context %}
+{% import "adminlte/widgets.html" as widgets with context %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block title %}Admin - {{ title }}{% endblock %}
+{% block description %}{{ block_description }}{% endblock %}
+
+{% block navbar %}
+
+  {% include "navbar.html" %}
+
+{%- endblock navbar %}
+
+
+{% block sidebar -%}
+
+  {% include 'sidebar.html' %}
+
+  {% include 'admin/sidebar_menu.html' %}
+
+{%- endblock sidebar %}
+
+
+{% block content_header -%}
+  {% include 'admin/content_header.html' %}
+{%- endblock content_header %}
+
+{% block content -%}
+    <!-- Main content --> 
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-header with-border">
+              <i class="fa fa-warning"></i>
+
+              <h3 class="box-title">You are Warned</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="alert alert-danger alert-dismissible">
+                <h4><i class="icon fa fa-ban"></i> Provider Delete Alert!</h4>
+                  Your are about to delete cloud provider "{{ provider.name }}" from database.
+                  You will not able to undo this action. 
+                  <br />
+                  Are you sure you want to delete this provider?
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+            <!-- /.box -->
+            <div class="register-box-body">
+                <form class="form-horizontal" action="" method="post">
+                {{ form.hidden_tag() }}
+                  <div class="row">
+                    <div class="col-xs-8 col-xs-offset-0">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="confirm"> I confirm to delete "{{ provider.name }}".
+                        </label>
+                        {% if form.confirm.errors %}
+                          <br />
+                          <span class="text-red">{% for error in form.confirm.errors %} {{ error }} {% endfor %}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                      <button type="submit" name="submit" class="btn btn-danger btn-block btn-flat" value="Update">Delete Provider</button>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                </form> 
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+{%- endblock content %}

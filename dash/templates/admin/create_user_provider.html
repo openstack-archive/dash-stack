@@ -1,0 +1,89 @@
+{% extends "adminlte/base.html" %}
+{% import "adminlte/layout.html" as layout with context %}
+{% import "adminlte/widgets.html" as widgets with context %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block title %}Admin - {{ title }}{% endblock %}
+{% block description %}{{ block_description }}{% endblock %}
+
+{% block navbar %}
+
+  {% include "navbar.html" %}
+
+{%- endblock navbar %}
+
+
+{% block sidebar -%}
+
+  {% include 'sidebar.html' %}
+
+  {% include 'admin/sidebar_menu.html' %}
+
+{%- endblock sidebar %}
+
+
+{% block content_header -%}
+  {% include 'admin/content_header.html' %}
+{%- endblock content_header %}
+
+{% block content -%}
+    <!-- Main content --> 
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-header with-border">
+              <i class="fa fa-info"></i>
+              <h3 class="box-title">Select Cloud Proivder and Create User Account</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="register-box-body">
+                <form class="form-horizontal" action="" method="post">
+                {{ form.hidden_tag() }}
+                  <div class="row">
+                    <div class="col-xs-8 col-xs-offset-0">
+                      <div class="form-group has-feedback">
+                        <label>Chose the Provider</label>
+                        <select name="provider" class="form-control">
+                          {% for provider in providers %}
+                          <option value="{{ provider.id }}" >{{ provider.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <span class="glyphicon glyphicon-signal form-control-feedback"></span>
+                        {% if form.provider.errors %}
+                          <span class="text-red">{% for error in form.provider.errors %} {{ error }} {% endfor %}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                      <label>Start</label>
+                      <button type="submit" name="submit" class="btn btn-danger btn-block btn-flat" value="Update">Create</button>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                </form> 
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+              <div class="register-box-body">
+                  <div class="row">
+                      <h3>Result</h3>
+                      {% if project %}
+                        {{ project }} <br />
+                        {{ user }} <br />
+                      {% endif %}
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
+
+{%- endblock content %}

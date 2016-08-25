@@ -5,7 +5,7 @@
       <i class="fa fa-dashboard"></i> <span>Admin Dashboard</span>
     </a>
   </li>
-
+  <!-- User management menu -->
   <li class="treeview">
     <a href="#">
       <i class="fa fa-users"></i>
@@ -29,6 +29,29 @@
         <a href="">
           <i class="fa fa-user-secret"></i>
           List Resellers
+        </a>
+      </li>
+    </ul>
+  </li>
+  
+  <!-- Provider management menu -->
+  <li class="treeview">
+    <a href="#">
+      <i class="fa fa-cloud"></i>
+      <span>Providers</span>
+      <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+      <li>
+        <a href="{{ url_for('admin.create_provider_admin') }}">
+          <i class="fa fa-cloud-upload"></i>
+          Create Provider
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('admin.list_providers') }}">
+          <i class="fa fa-list"></i>
+          List Providers
         </a>
       </li>
     </ul>

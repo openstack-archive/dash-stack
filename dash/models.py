@@ -34,6 +34,7 @@ class User(UserMixin, db.Model):
     avatar = db.Column(db.String(255), index=True)
     created_at = db.Column(db.DateTime)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    provider_password = db.Column(db.Text(255))
     confirmed = db.Column(db.Boolean, default=False)
     suspended = db.Column(db.Boolean, default=False)
                 
@@ -108,6 +109,24 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+class Provider(db.Model):
+    __tablename__ = 'providers'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    provider = db.Column(db.String(128), unique=False, index=True)
+    name = db.Column(db.String(128), unique=True, index=True)
+    region = db.Column(db.String(128), unique=False, index=True)
+    project_name = db.Column(db.String(128), unique=False, index=True)
+    default_role = db.Column(db.String(128), unique=False, index=True)
+    username = db.Column(db.String(128), unique=False, index=True)
+    api_version = db.Column(db.String(64), unique=False, index=True)
+    password = db.Column(db.Text(255), unique=False, index=False)
+    url = db.Column(db.Text(512))
+    created_at = db.Column(db.DateTime)
+    enabled = db.Column(db.Boolean, default=True, nullable=False)
+    validated = db.Column(db.Boolean, default=False, nullable=False)
+    
+    
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

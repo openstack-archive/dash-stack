@@ -1,0 +1,87 @@
+{% extends "adminlte/base.html" %}
+{% import "adminlte/layout.html" as layout with context %}
+{% import "adminlte/widgets.html" as widgets with context %}
+
+{% block title %}Admin - {{ title }}{% endblock %}
+{% block description %}{{ block_description }}{% endblock %}
+
+{% block navbar %}
+
+  {% include "navbar.html" %}
+
+{%- endblock navbar %}
+
+
+{% block sidebar -%}
+
+  {% include 'sidebar.html' %}
+
+  {% include 'admin/sidebar_menu.html' %}
+
+{%- endblock sidebar %}
+
+
+{% block content_header -%}
+  {% include 'admin/content_header.html' %}
+{%- endblock content_header %}
+
+{% block content -%}
+    <!-- Main content --> 
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Provider</th>
+                  <th>Name</th>
+                  <th>Tenant Name</th>
+                  <th>User Name</th>
+                  <th>API Version</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for provider in providers %}
+                <tr>
+                  <td>{{ provider.id }}</td>
+                  <td>{{ provider.provider }}</td>
+                  <td>{{ provider.name }}</td>
+                  <td>{{ provider.project_name }}</td>
+                  <td>{{ provider.username }}</td>
+                  <td>{{ provider.api_version }}</td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_provider_admin', id=provider.id) }}">Edit</a>
+                     | 
+                    <a href="{{ url_for('admin.delete_provider_admin', id=provider.id) }}">Delete</a>
+                     |
+                    <a href="{{ url_for('admin.validate_provider_admin', id=provider.id) }}">Validate</a>
+                  </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>ID</th>
+                  <th>Provider</th>
+                  <th>Name</th>
+                  <th>Tenant Name</th>
+                  <th>User Name</th>
+                  <th>API Version</th>
+                  <th>Action</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+{%- endblock content %}

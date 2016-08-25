@@ -3,7 +3,7 @@ from flask import flash
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
                     ValidationError, SelectField 
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
-from ..models import User, Role
+from ..models import User, Role, Provider
 
 class EditUserAdminForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 128),
@@ -58,4 +58,53 @@ class CreateUserAdminForm(Form):
             
 class DeleteUserAdminForm(Form):
     confirm = BooleanField('Confirmed', validators=[Required(message='You must confirm to delete.')])
+
+class CreateUserProviderAdminForm(Form):
+    provider = SelectField('Provider', coerce=int)
+
+    def __init__(self, user, *args, **kwargs):
+        super(CreateUserProviderAdminForm, self).__init__(*args, **kwargs)
+        self.provider.choices = [(provider.id, provider.name)
+                             for provider in Provider.query.order_by(Provider.name).all()]    
+
+class CreateProviderAdminForm(Form):
+    provider = SelectField('Provider', validators=[Required()],
+                            choices=[('openstack', 'OpenStack'), ('other', 'Other')])
+    name = StringField('Name', validators=[Required(), Length(1, 256)])
+    project_name = StringField('Admin Project Name', validators=[Required(), Length(1, 128)])
+    region = StringField('Region Name', validators=[Required(), Length(1, 128)])
+    default_role = StringField('Default Role Name', validators=[Required(), Length(1, 128)])
+    username = StringField('User Name', validators=[Required(), Length(1, 128)])
+    password = PasswordField('Password', validators=[Required(), Length(1, 256)])
+    api_version = StringField('API Version', validators=[Required(), Length(1, 64)])
+    url = StringField('URL', validators=[Required(), Length(1, 256)])
+    enabled = BooleanField('Enabled')
     
+    def validate_name(self, field):
+        if Provider.query.filter_by(name=field.data).first():
+            raise ValidationError('Provider name is already used. Use different name.')
+            
+class EditProviderAdminForm(Form):
+    provider = SelectField('Provider', validators=[Required()],
+                            choices=[('openstack', 'OpenStack'), ('other', 'Other')])
+    name = StringField('Name', validators=[Required(), Length(1, 128)])
+    project_name = StringField('Tenant Name', validators=[Required(), Length(1, 128)])
+    region = StringField('Region Name', validators=[Required(), Length(1, 128)])
+    default_role = StringField('Default Role Name', validators=[Required(), Length(1, 128)])
+    username = StringField('User Name', validators=[Required(), Length(1, 128)])
+    password = PasswordField('Password', validators=[Required(), Length(1, 256)])
+    api_version = StringField('API Version', validators=[Required(), Length(1, 64)])
+    url = StringField('URL', validators=[Required(), Length(1, 256)])
+    enabled = BooleanField('Enabled')
+    
+class DeleteProviderAdminForm(Form):
+    confirm = BooleanField('Confirmed', validators=[Required(message='You must confirm to delete.')])
+    
+class ValidateProviderAdminForm(Form):
+    provider = SelectField('Provider', coerce=int)
+    confirm = BooleanField('Confirmed', validators=[Required(message='You must confirm to delete.')])
+    
+    def __init__(self, provider, *args, **kwargs):
+        super(ValidateProviderAdminForm, self).__init__(*args, **kwargs)
+        self.provider.choices = [(provider.id, provider.name)
+                             for provider in Provider.query.order_by(Provider.name).all()]

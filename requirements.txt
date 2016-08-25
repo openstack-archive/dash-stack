@@ -16,3 +16,4 @@ alembic
 blinker
 itsdangerous
 flask-principal
+requests
