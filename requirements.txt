@@ -17,3 +17,5 @@ blinker
 itsdangerous
 flask-principal
 requests
+python-novaclient
+keystoneauth1

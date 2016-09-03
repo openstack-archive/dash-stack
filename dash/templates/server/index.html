@@ -25,8 +25,7 @@
 
 {% block content -%}
           <h4 class="page-header">
-            AdminLTE Small Boxes
-            {{ current_user.suspended }}
+            Resource Overview
             <small>Small boxes are used for viewing statistics. To create a small box use the <code>widgets.small_box</code> widget.</small>
           </h4>
           <!-- Small boxes (Stat box) -->
@@ -36,8 +35,8 @@
               widgets.small_box(
                 bgcolor="bg-aqua",
                 header=150,
-                body="New Orders",
-                iconclass="ion ion-bag",
+                body="Total Servers",
+                iconclass="ion ion-cloud",
                 footerlink="#"
               )
             }}

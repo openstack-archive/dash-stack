@@ -2,7 +2,7 @@
 {% import "adminlte/layout.html" as layout with context %}
 {% import "adminlte/widgets.html" as widgets with context %}
 
-{% block title %}Admin - {{ title }}{% endblock %}
+{% block title %}Server - {{ title }}{% endblock %}
 {% block description %}{{ block_description }}{% endblock %}
 
 {% block navbar %}
@@ -22,7 +22,7 @@
 
 
 {% block content_header -%}
-  {% include 'admin/content_header.html' %}
+  {% include 'server/content_header.html' %}
 {%- endblock content_header %}
 
 {% block content -%}
@@ -30,27 +30,41 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
-            <!-- /.box-header -->
             <div class="box-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>User ID</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Created At</th>
-                  <th>Role</th>
+                  <th>Server Name</th>
+                  <th>IP</th>
+                  <th>Status</th>
+                  <th>Task</th>
+                  <th>Power</th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for user in users %}
+                {% for server in servers %}
                 <tr>
-                  <td>{{ user.id }}</td>
-                  <td>{{ user.username }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>{{ user.created_at }}</td>
-                  <td>{{ user.role.name }}</td>
+                  <td>{{ server.name }}</td>
+                  <td>
+                    {% for ips in server.networks['private'] %}
+                      {{ ips }} |
+                    {% endfor %}
+                  </td>
+                  <td>{{ server.status }}</td>
+                  <td>{{ server|attr('OS-EXT-STS:task_state') }}</td>
+                  <td>
+                  {{ server|attr('OS-EXT-STS:power_state') }}
+                  {% if server|attr('OS-EXT-STS:power_state') == 1 %}
+                    Running
+                  {% elif server|attr('OS-EXT-STS:power_state') == 2 %}
+                    Shutoff
+                  {% elif server|attr('OS-EXT-STS:power_state') == 3 %}
+                    Paused
+                  {% elif server|attr('OS-EXT-STS:power_state') == 4 %}
+                    Shut Down
+                  {% endif %}
+                  </td>
                   <td>
                     <a href="{{ url_for('admin.edit_user_admin', id=user.id) }}">Edit</a>
                      | 
@@ -61,11 +75,11 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>User ID</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Created At</th>
-                  <th>Role</th>
+                  <th>Server Name</th>
+                  <th>IP</th>
+                  <th>Status</th>
+                  <th>Task</th>
+                  <th>Power</th>
                   <th>Action</th>
                 </tr>
                 </tfoot>
