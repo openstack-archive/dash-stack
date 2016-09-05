@@ -60,6 +60,18 @@ def create_app(config_name):
     # server application
     from .server import server as server_blueprint
     dash.register_blueprint(server_blueprint, url_prefix='/server')
+
+    # image application
+    from .image import image as image_blueprint
+    dash.register_blueprint(image_blueprint, url_prefix='/image')
+    
+    # security application
+    from .security import security as security_blueprint
+    dash.register_blueprint(security_blueprint, url_prefix='/security')
+
+    # network application
+    from .network import network as network_blueprint
+    dash.register_blueprint(network_blueprint, url_prefix='/network')
     
     # admin application
     from .admin import admin as admin_blueprint

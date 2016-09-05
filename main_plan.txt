@@ -2,9 +2,9 @@
 Account
 Dash Board
 Servers
-Images & APPs
-Security
+Images
 Networking
+Security
 API
 Logs
 Settings

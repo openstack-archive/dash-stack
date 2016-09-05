@@ -9,7 +9,7 @@
     </li>
   <!-- Server Management Menu -->
   <li class="treeview">
-    <a href="#">
+    <a href="{{ url_for('server.index') }}">
       <i class="fa fa-server"></i>
       <span>Servers</span>
       <i class="fa fa-angle-left pull-right"></i>
@@ -22,9 +22,90 @@
         </a>
       </li>
       <li>
-        <a href="">
+        <a href=" {{ url_for('server.list_servers') }} ">
           <i class="fa fa-list"></i>
           List Servers
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>
+{% endif %}
+
+{% if current_user.role.name == "user" or current_user.role.name == "admin" %}
+<!-- Image Management Menu -->
+<ul class="sidebar-menu">
+  <li class="treeview">
+    <a href="#">
+      <i class="fa fa-picture-o"></i>
+      <span>Images</span>
+      <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+      <li>
+        <a href="{{ url_for('image.index') }}">
+          <i class="fa fa-plus"></i>
+          Create Image
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('image.list_images') }}">
+          <i class="fa fa-list"></i>
+          List Images
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>
+{% endif %}
+
+{% if current_user.role.name == "user" or current_user.role.name == "admin" %}
+<!-- Networking Management Menu -->
+<ul class="sidebar-menu">
+  <li class="treeview">
+    <a href="#">
+      <i class="fa fa-arrows"></i>
+      <span>Networking</span>
+      <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+      <li>
+        <a href="{{ url_for('network.index') }}">
+          <i class="fa fa-plus"></i>
+          Create Network
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('network.index') }}">
+          <i class="fa fa-list"></i>
+          List Network
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>
+{% endif %}
+
+{% if current_user.role.name == "user" or current_user.role.name == "admin" %}
+<!-- Security Management Menu -->
+<ul class="sidebar-menu">
+  <li class="treeview">
+    <a href="#">
+      <i class="fa fa-shield"></i>
+      <span>Security</span>
+      <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+      <li>
+        <a href="{{ url_for('security.index') }}">
+          <i class="fa fa-plus"></i>
+          List Security
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('security.index') }}">
+          <i class="fa fa-list"></i>
+          List Security
         </a>
       </li>
     </ul>
