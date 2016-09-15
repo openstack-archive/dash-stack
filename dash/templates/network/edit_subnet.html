@@ -1,0 +1,207 @@
+{% extends "adminlte/base.html" %}
+{% import "adminlte/layout.html" as layout with context %}
+{% import "adminlte/widgets.html" as widgets with context %}
+
+{% block title %}Network - {{ title }}{% endblock %}
+{% block description %}{{ block_description }}{% endblock %}
+
+{% block navbar %}
+
+  {% include "navbar.html" %}
+
+{%- endblock navbar %}
+
+
+{% block sidebar -%}
+
+  {% include 'sidebar.html' %}
+
+  {% include 'sidebar_menu.html' %}
+
+{%- endblock sidebar %}
+
+
+{% block content_header -%}
+  {% include 'network/content_header.html' %}
+{%- endblock content_header %}
+
+{% block content -%}
+    <!-- Main content -->
+    {{ subnet }}
+      <div class="row">
+        <div class="col-xs-9">
+
+        </div>
+        <div class="col-xs-3">
+          <div style="margin-bottom:10px;" class="btn-group">
+            <button type="button" class="btn btn-primary">Edit</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Edit</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Delete</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-3">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Name</h3>
+            </div>
+            <div class="box-body">
+                <h3> {{ subnet.subnets[0]['name'] }} </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Network</h3>
+            </div>
+            <div class="box-body">
+                <h3> {{ neutron.list_networks(id=subnet.subnets[0]['network_id']).networks[0]['name']}} </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">CIDR</h3>
+            </div>
+            <div class="box-body">
+                <h3> {{ subnet.subnets[0]['cidr'] }} </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">IP Range</h3>
+            </div>
+            <div class="box-body">
+                <h3> 
+                  {{ subnet.subnets[0].allocation_pools[0]['start'] }} -
+                  {{ subnet.subnets[0].allocation_pools[0]['end'] }}
+                </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-3">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">DHCP</h3>
+            </div>
+            <div class="box-body">
+                <h3>
+                  {% if subnet.subnets[0]['enable_dhcp'] %}
+                  Enabled
+                  {% else %}
+                  Disabled
+                  {% endif %}
+                </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Gateway</h3>
+            </div>
+            <div class="box-body">
+                <h3> {{ subnet.subnets[0]['gateway_ip']}} </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">DNS Nameservers</h3>
+            </div>
+            <div class="box-body">
+                <h3>
+                {% for ns in subnet.subnets[0]['dns_nameservers'] %}
+                {{ ns }}
+                {% endfor %}
+                </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">IP Version</h3>
+            </div>
+            <div class="box-body">
+                <h3> 
+                  IPv{{ subnet.subnets[0].ip_version }}
+                </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Subnet Ips</h3>
+            </div>
+            <div class="box-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>IP Address</th>
+                  <th>Attached</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for port in ports.ports %}
+                {% if port.fixed_ips[0]['subnet_id'] == subnet.subnets[0]['id'] %}
+                <tr>
+                  <td> {{ port.fixed_ips[0]['ip_address'] }} </td>
+                  <td>
+                  {% set device_owner = port.device_owner.split(':') %}
+                  {% if device_owner[0] == "compute" %}
+                    {{ nova.servers.get(neutron.list_ports(id=port['id']).ports[0]['device_id']).name }}
+                  {% else %}
+                    {{ device_owner[0] }} : {{ device_owner[1] }}
+                  {% endif %}
+                  </td>
+                  <td> {{ port['status'] }} </td>
+                  <td>
+                    <a href="#">Edit</a>
+                  </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>IP Address</th>
+                  <th>Attached</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+{%- endblock content %}

@@ -1,0 +1,82 @@
+{% extends "adminlte/base.html" %}
+{% import "adminlte/layout.html" as layout with context %}
+{% import "adminlte/widgets.html" as widgets with context %}
+
+{% block title %}Network - {{ title }}{% endblock %}
+{% block description %}{{ block_description }}{% endblock %}
+
+{% block navbar %}
+
+  {% include "navbar.html" %}
+
+{%- endblock navbar %}
+
+
+{% block sidebar -%}
+
+  {% include 'sidebar.html' %}
+
+  {% include 'sidebar_menu.html' %}
+
+{%- endblock sidebar %}
+
+
+{% block content_header -%}
+  {% include 'network/content_header.html' %}
+{%- endblock content_header %}
+
+{% block content -%}
+     <!--{{ subnets }}<hr />
+     {{ networks }} <hr />
+     {{ ports }}
+     -->
+    <!-- Main content -->
+      <div class="row">
+        <form class="form-horizontal" action="" method="post">
+        {{ form.hidden_tag() }}
+        <input type="hidden" name="floatingip" value="{{ floatingip.floatingips[0].floating_ip_address }}">
+        <div class="col-xs-4">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Floating IP Address</h3>
+            </div>
+            <div class="box-body">
+                <h3>
+                {{ floatingip.floatingips[0].floating_ip_address }}
+                </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Server</h3>
+            </div>
+            <div class="box-body">
+              <select name="server" class="form-control">
+              {% for server in servers %}
+                  <option value="{{ server.id }}">{{ server.name }}</option>
+              {% endfor %}
+              </select>
+              {% if form.server.errors %}
+                <br />
+                <span class="text-red">{% for error in form.server.errors %} {{ error }} {% endfor %}</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Action</h3>
+            </div>
+            <div class="box-body">
+              <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat" value="reassign">Reassign</button>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+      <!-- /.row -->
+
+{%- endblock content %}

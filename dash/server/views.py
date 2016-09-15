@@ -38,8 +38,10 @@ def list_servers():
     sess = session.Session(auth=auth)
     nova = client.Client('2', session=sess)
     servers = nova.servers.list()
+    for_servers = [(server.id, server.name)
+                        for server in nova.servers.list()]
     return render_template('server/list_servers.html',
                            title="List Servers",
                            block_description = "list your servers",
                            user=user, provider=provider,nova=nova,
-                           servers=servers)
+                           servers=servers,for_servers=for_servers)
