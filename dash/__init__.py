@@ -41,7 +41,15 @@ def create_app(config_name):
     login_manager.init_app(dash)
     Principal.init_app(dash)
     toolbar.init_app(dash)
-    
+
+    @dash.context_processor
+    def my_utility_processor():
+        from .models import Provider
+        def all_providers():
+            """ returns the all providers """
+            return Provider.query.all()
+
+        return dict(all_providers=all_providers)
     
     # attach routes and custom error pages here
     

@@ -37,6 +37,7 @@ class User(UserMixin, db.Model):
     provider_password = db.Column(db.Text(255))
     confirmed = db.Column(db.Boolean, default=False)
     suspended = db.Column(db.Boolean, default=False)
+    selected_provider = None
                 
     @property
     def password(self):
@@ -107,7 +108,7 @@ class User(UserMixin, db.Model):
         return True
                 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.username, '<User %r>' % self.selected_provider
 
 class Provider(db.Model):
     __tablename__ = 'providers'

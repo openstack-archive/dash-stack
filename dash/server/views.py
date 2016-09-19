@@ -7,6 +7,7 @@ from novaclient import client
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required, \
     current_user
+from flask_login import session as flask_session
 from flask_principal import Identity, AnonymousIdentity, \
         identity_changed
     
@@ -27,7 +28,7 @@ def index():
 @requires_roles("user","admin")
 def list_servers():
     user = User.query.get_or_404(current_user.id)
-    provider = Provider.query.get_or_404("1")
+    provider = Provider.query.get_or_404(flask_session['selected_provider'])
     loader = loading.get_plugin_loader('password')
     auth = loader.load_from_options(auth_url=provider.url,
                                     username=user.username,

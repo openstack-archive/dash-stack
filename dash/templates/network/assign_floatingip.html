@@ -26,24 +26,30 @@
 {%- endblock content_header %}
 
 {% block content -%}
+<script type = "text/javascript" language = "javascript">
+    $("#Unassign").live("click", function(){                       
+      $("#button").load($("#text").attr("href"));         
+      return false;
+    });
+</script>
      <!--{{ subnets }}<hr />
      {{ networks }} <hr />
      {{ ports }}
      -->
+     {{ server }}
     <!-- Main content -->
       <div class="row">
         <form class="form-horizontal" action="" method="post">
         {{ form.hidden_tag() }}
-        <input type="hidden" name="floatingip" value="{{ floatingip.floatingips[0].floating_ip_address }}">
         <div class="col-xs-4">
           <div class="box box-solid">
             <div class="box-header with-border">
               <h3 class="box-title">Floating IP Address</h3>
             </div>
             <div class="box-body">
-                <h3>
+              <span style="font-size: 167%;">
                 {{ floatingip.floatingips[0].floating_ip_address }}
-                </h3>
+              </span>
             </div>
           </div>
         </div>
@@ -53,14 +59,22 @@
               <h3 class="box-title">Server</h3>
             </div>
             <div class="box-body">
-              <select name="server" class="form-control">
-              {% for server in servers %}
-                  <option value="{{ server.id }}">{{ server.name }}</option>
-              {% endfor %}
-              </select>
-              {% if form.server.errors %}
-                <br />
-                <span class="text-red">{% for error in form.server.errors %} {{ error }} {% endfor %}</span>
+              {% if floatingip.floatingips[0]['port_id'] %}
+                <h3>
+                  {% set server_name = nova.servers.get(neutron.list_ports(id=floatingip.floatingips[0]['port_id']).ports[0]['device_id']).name %}
+                  {% set server_id = nova.servers.get(neutron.list_ports(id=floatingip.floatingips[0]['port_id']).ports[0]['device_id']).id %}
+                  {{ server_name }}
+                </h3>
+              {% else %}
+                <select name="server" class="form-control">
+                {% for server in servers %}
+                    <option value="{{ server.id }}">{{ server.name }}</option>
+                {% endfor %}
+                </select>
+                {% if form.server.errors %}
+                  <br />
+                  <span class="text-red">{% for error in form.server.errors %} {{ error }} {% endfor %}</span>
+                {% endif %}
               {% endif %}
             </div>
           </div>
@@ -71,12 +85,19 @@
               <h3 class="box-title">Action</h3>
             </div>
             <div class="box-body">
-              <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat" value="reassign">Reassign</button>
+              {% if floatingip.floatingips[0]['port_id'] %}
+                <a type="button" class="btn btn-primary" id="button"
+                href="{{ url_for('network.unassign_floatingip', id=floatingip.floatingips[0]['id'], server_id=server_id ) }}">
+                  Unassign
+                </a>
+              {% else %}
+                <button type="submit" class="btn btn-primary">Reassign</button>
+                <button class="btn btn-danger">Release</button>
+              {% endif %}  
             </div>
           </div>
         </div>
         </form>
       </div>
       <!-- /.row -->
-
 {%- endblock content %}

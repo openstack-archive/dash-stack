@@ -12,25 +12,13 @@ from flask_login import login_user, logout_user, login_required, \
 from flask_principal import Identity, AnonymousIdentity, \
         identity_changed
         
-from .forms import AssignFloatingIP
+from .forms import AssignFloatingIP, UnAssignFloatingIP
     
 from . import network
 from .. import db
 from ..models import User, Role, Provider
 from ..email import send_email
 from ..decorators import requires_roles
-
-def print_values(val, type):
-    if type == 'ports':
-        val_list = val['ports']
-    if type == 'networks':
-        val_list = val['networks']
-    if type == 'routers':
-        val_list = val['routers']
-    for p in val_list:
-        for k, v in p.items():
-            print("%s : %s" % (k, v))
-        print('\n')
 
 
 @network.route('/', methods=['GET', 'POST'])
@@ -73,7 +61,6 @@ def list_ips():
 def assign_floatingip(id):
     user = User.query.get_or_404(current_user.id)
     provider = Provider.query.get_or_404("1")
-    form = AssignFloatingIP()
     auth = identity.Password(auth_url=provider.url,
                              username=user.username,
                              password=user.provider_password,
@@ -88,16 +75,48 @@ def assign_floatingip(id):
     subnets = neutron.list_subnets()
     routers = neutron.list_routers()
     floatingip = neutron.list_floatingips(id=id)
-    ports = neutron.list_ports()        
+    ports = neutron.list_ports()
+    form = AssignFloatingIP(floatingip=floatingip)
+    if form.validate_on_submit():
+        server = form.server.data
+        server_assign = nova.servers.get(server)
+        floatingip_assign = floatingip['floatingips'][0]['floating_ip_address']
+        server_assign.add_floating_ip(floatingip_assign)
+        flash("Floating IP Assigned")
+        return redirect(url_for('.assign_floatingip', id=id))
     return render_template('network/assign_floatingip.html',
                            title="Assign Floating IP",
                            block_description = "assign floating ip to server",
+                           form=form,
                            user=user, provider=provider,neutron=neutron,nova=nova,
                            networks=networks,subnets=subnets,routers=routers,
-                           floatingip=floatingip, ports=ports,form=form,
-                           servers=servers,
+                           floatingip=floatingip, ports=ports,
+                           servers=servers,id=id,
                            sess=sess)
-                         
+                           
+@network.route('/unassign-floatingip/<id>/<server_id>', methods=['GET', 'POST'])
+@login_required
+@requires_roles("user","admin")                          
+def unassign_floatingip(id,server_id):
+    user = User.query.get_or_404(current_user.id)
+    provider = Provider.query.get_or_404("1")
+    auth = identity.Password(auth_url=provider.url,
+                             username=user.username,
+                             password=user.provider_password,
+                             project_name=user.username,
+                             project_domain_name='Default',
+                             user_domain_name='Default')
+    sess = session.Session(auth=auth)
+    neutron = client.Client(session=sess)
+    nova = client_nova.Client('2', session=sess)
+    floatingip = neutron.list_floatingips(id=id)
+    server = server_id
+    server_assign = nova.servers.get(server)
+    floatingip_assign = floatingip['floatingips'][0]['floating_ip_address']
+    server_assign.remove_floating_ip(floatingip_assign)
+    flash("Floating IP Unassigned")
+    return redirect(url_for('network.assign_floatingip', id=id))
+                           
 @network.route('/edit-subnet/<id>', methods=['GET', 'POST'])
 @login_required
 @requires_roles("admin")

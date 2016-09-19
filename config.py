@@ -21,7 +21,7 @@ class DevelopmentConfig(Config):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-        ('mysql://root:Polo1043@localhost/dashDev')
+        ('mysql+pymysql://root:Polo1043@localhost/dashDev')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     WTF_CSRF_ENABLED = True
     SECRET_KEY = 'you-will-never-guess'

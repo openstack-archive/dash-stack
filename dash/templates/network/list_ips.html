@@ -55,7 +55,9 @@
                   <td>{{ floatingip['floating_ip_address'] }} </td>
                   <td>
                     {% if floatingip['port_id'] %}
-                    {{ nova.servers.get(neutron.list_ports(id=floatingip['port_id']).ports[0]['device_id']).name }}
+                    {% set server_name = nova.servers.get(neutron.list_ports(id=floatingip['port_id']).ports[0]['device_id']).name %}
+                    {% set server_id = nova.servers.get(neutron.list_ports(id=floatingip['port_id']).ports[0]['device_id']).id %}
+                    {{ server_name }}
                     {% endif %}
                   </td>
                   <td>
@@ -67,15 +69,25 @@
                   <td>
                     <div style="margin-bottom:10px;" class="btn-group">
                       <button type="button" class="btn btn-default">
-                        <a style="color:black" href="">Action</a>
+                        <a style="color:black" href="#">Action</a>
                       </button>
                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                       </button>
                       <ul class="dropdown-menu" role="menu">
-                        <li><a href="{{ url_for('network.assign_floatingip', id=floatingip['id']) }}">Reassign</a></li>
-                        <li><a href="">Unassign</a></li>
+                        <li>
+                          <a href="{{ url_for('network.assign_floatingip', id=floatingip['id'] ) }}">
+                            Reassign
+                          </a>
+                        </li>
+                        {% if floatingip['port_id'] %}
+                        <li>
+                          <a href="{{ url_for('network.unassign_floatingip', id=floatingip['id'], server_id=server_id ) }}">
+                              Unassign
+                          </a>
+                        </li>
+                        {% endif %}
                         <li class="divider"></li>
                         <li><a style="color:red" href="#">Release</a></li>
                       </ul>
