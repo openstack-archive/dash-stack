@@ -41,12 +41,13 @@ def create_app(config_name):
     login_manager.init_app(dash)
     Principal.init_app(dash)
     toolbar.init_app(dash)
-
+    
+    # special helper functions
     @dash.context_processor
     def my_utility_processor():
         from .models import Provider
         def all_providers():
-            """ returns the all providers """
+            """ returns all providers """
             return Provider.query.all()
 
         return dict(all_providers=all_providers)
