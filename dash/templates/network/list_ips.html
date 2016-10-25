@@ -31,6 +31,17 @@
      {{ ports }}
      -->
     <!-- Main content -->
+    
+      <div class="row">
+        <div class="col-xs-12">
+          <div style="margin-bottom:10px;" class="btn-group">
+            <a href="{{ url_for('network.get_floatingip') }}">
+              <button type="button" class="btn btn-primary">Get New Floating IP</button>
+            </a>
+          </div>
+        </div>
+      </div>
+      
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
@@ -76,11 +87,13 @@
                         <span class="sr-only">Toggle Dropdown</span>
                       </button>
                       <ul class="dropdown-menu" role="menu">
+                        {% if not floatingip['port_id'] %}
                         <li>
                           <a href="{{ url_for('network.assign_floatingip', id=floatingip['id'] ) }}">
                             Reassign
                           </a>
                         </li>
+                        {% endif %}
                         {% if floatingip['port_id'] %}
                         <li>
                           <a href="{{ url_for('network.unassign_floatingip', id=floatingip['id'], server_id=server_id ) }}">
@@ -89,7 +102,11 @@
                         </li>
                         {% endif %}
                         <li class="divider"></li>
-                        <li><a style="color:red" href="#">Release</a></li>
+                        <li>
+                          <a href="{{ url_for('network.release_floatingip', id=floatingip['id'] ) }}">
+                            Release
+                          </a>
+                        </li>
                       </ul>
                     </div>
                   </td>
@@ -110,6 +127,21 @@
             </div>
             <!-- /.box-body -->
           </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-12">
+          <div style="margin-bottom:10px;" class="btn-group">
+            <a href="{{ url_for('network.get_floatingip') }}">
+              <button type="button" class="btn btn-primary">Create New Private Subnet</button>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Private Subnets</h3>

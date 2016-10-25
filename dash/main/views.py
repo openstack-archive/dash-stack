@@ -38,6 +38,19 @@ def for_resellers_only():
 @requires_roles("user","reseller","admin")
 def select_provider(id):
     provider = Provider.query.filter_by(id=id).first()
+    user = User.query.filter_by(id=current_user.id).first()
     if provider:
-        session['selected_provider'] = id
+        user.selected_provider_id = id
+        db.session.add(user)
+        flash('%s has been selected.' % provider.name)
     return redirect(redirect_url())
+    
+@main.route('/all-providers')
+@login_required
+@requires_roles("user","reseller","admin")
+def all_providers():
+    providers = Provider.query.all()
+    return render_template('all_providers.html',
+                            title="All Providers",
+                            block_description = "list of all providers",
+                            providers=providers)

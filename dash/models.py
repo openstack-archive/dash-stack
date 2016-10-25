@@ -37,7 +37,7 @@ class User(UserMixin, db.Model):
     provider_password = db.Column(db.Text(255))
     confirmed = db.Column(db.Boolean, default=False)
     suspended = db.Column(db.Boolean, default=False)
-    selected_provider = None
+    selected_provider_id = db.Column(db.Integer, db.ForeignKey('providers.id'))
                 
     @property
     def password(self):

@@ -26,9 +26,8 @@
 {%- endblock content_header %}
 
 {% block content -%}
+
     <!-- Main content -->
-    {{ servers }} <hr />
-    {{ for_servers }} <hr />
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
@@ -47,7 +46,7 @@
                 <tbody>
                 {% for server in servers %}
                 <tr>
-                  <td>{{ server.name }} - {{ server.id }} </td>
+                  <td>{{ server.name }}</td>
                   <td>
                     {% for ips in server.networks['private'] %}
                       {{ ips }} |

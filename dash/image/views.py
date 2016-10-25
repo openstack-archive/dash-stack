@@ -28,7 +28,7 @@ def index():
 @requires_roles("user","admin")
 def list_images():
     user = User.query.get_or_404(current_user.id)
-    provider = Provider.query.get_or_404("1")
+    provider = Provider.query.get_or_404(user.selected_provider_id)
     loader = loading.get_plugin_loader('password')
     auth = loader.load_from_options(auth_url=provider.url,
                                     username=user.username,

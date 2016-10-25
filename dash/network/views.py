@@ -20,6 +20,10 @@ from ..models import User, Role, Provider
 from ..email import send_email
 from ..decorators import requires_roles
 
+def redirect_url():
+    return request.args.get('next') or \
+           request.referrer or \
+           url_for('main.index')
 
 @network.route('/', methods=['GET', 'POST'])
 @login_required
@@ -32,7 +36,7 @@ def index():
 @requires_roles("user","admin")
 def list_ips():
     user = User.query.get_or_404(current_user.id)
-    provider = Provider.query.get_or_404("1")
+    provider = Provider.query.get_or_404(user.selected_provider_id)
     auth = identity.Password(auth_url=provider.url,
                              username=user.username,
                              password=user.provider_password,
@@ -54,13 +58,51 @@ def list_ips():
                            networks=networks,subnets=subnets,routers=routers,
                            floatingips=floatingips, ports=ports,
                            sess=sess)
+
+@network.route('/get-floatingip')
+@login_required
+@requires_roles("user","reseller","admin")                          
+def get_floatingip():
+    user = User.query.get_or_404(current_user.id)
+    provider = Provider.query.get_or_404(user.selected_provider_id)
+    auth = identity.Password(auth_url=provider.url,
+                             username=user.username,
+                             password=user.provider_password,
+                             project_name=user.username,
+                             project_domain_name='Default',
+                             user_domain_name='Default')
+    sess = session.Session(auth=auth)
+    neutron = client.Client(session=sess)
+    floating_ip = neutron.create_floatingip({'floatingip':
+                                            {'floating_network_id':'a5d278cb-0157-4dbc-90be-199dc8cc95b6'}
+                                            })
+    flash('Floating IP has allocated.\n %s' % floating_ip['floatingip']['floating_ip_address'])
+    return redirect(redirect_url())
+    
+@network.route('/release-floatingip/<id>')
+@login_required
+@requires_roles("user","reseller","admin")                          
+def release_floatingip(id):
+    user = User.query.get_or_404(current_user.id)
+    provider = Provider.query.get_or_404(user.selected_provider_id)
+    auth = identity.Password(auth_url=provider.url,
+                             username=user.username,
+                             password=user.provider_password,
+                             project_name=user.username,
+                             project_domain_name='Default',
+                             user_domain_name='Default')
+    sess = session.Session(auth=auth)
+    neutron = client.Client(session=sess)
+    floating_ip = neutron.delete_floatingip(id)
+    flash('Floating IP has released.')
+    return redirect(redirect_url())
                            
 @network.route('/assign-floatingip/<id>', methods=['GET', 'POST'])
 @login_required
 @requires_roles("user","admin")                          
 def assign_floatingip(id):
     user = User.query.get_or_404(current_user.id)
-    provider = Provider.query.get_or_404("1")
+    provider = Provider.query.get_or_404(user.selected_provider_id)
     auth = identity.Password(auth_url=provider.url,
                              username=user.username,
                              password=user.provider_password,
@@ -99,7 +141,7 @@ def assign_floatingip(id):
 @requires_roles("user","admin")                          
 def unassign_floatingip(id,server_id):
     user = User.query.get_or_404(current_user.id)
-    provider = Provider.query.get_or_404("1")
+    provider = Provider.query.get_or_404(user.selected_provider_id)
     auth = identity.Password(auth_url=provider.url,
                              username=user.username,
                              password=user.provider_password,
@@ -122,7 +164,7 @@ def unassign_floatingip(id,server_id):
 @requires_roles("admin")
 def edit_subnet(id):
     user = User.query.get_or_404(current_user.id)
-    provider = Provider.query.get_or_404("1")
+    provider = Provider.query.get_or_404(user.selected_provider_id)
     auth = identity.Password(auth_url=provider.url,
                              username=user.username,
                              password=user.provider_password,
