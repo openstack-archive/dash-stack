@@ -118,6 +118,7 @@ class Provider(db.Model):
     name = db.Column(db.String(128), unique=True, index=True)
     region = db.Column(db.String(128), unique=False, index=True)
     project_name = db.Column(db.String(128), unique=False, index=True)
+    project_id = db.Column(db.String(128), unique=False, index=True)
     default_role = db.Column(db.String(128), unique=False, index=True)
     username = db.Column(db.String(128), unique=False, index=True)
     api_version = db.Column(db.String(64), unique=False, index=True)
