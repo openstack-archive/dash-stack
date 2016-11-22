@@ -25,7 +25,18 @@ SECRET_KEY = '@b*)c#tfs%382t87hojq!1pou#f_3557kf(w@a++y$j5)+$rmd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dash-stack',]
+ALLOWED_HOSTS = [
+    'dash-stack',
+    '198.211.127.189',
+]
+
+# login url
+LOGIN_URL = '/auth/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+# logout redirect
+LOGOUT_REDIRECT_URL = '/auth/login/'
 
 
 # Application definition
@@ -57,12 +68,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 ]
 
-ROOT_URLCONF = 'dash_stack.urls'
+ROOT_URLCONF = 'dash_stack_dashboard.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,7 +86,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'dash_stack.wsgi.application'
+WSGI_APPLICATION = 'dash_stack_dashboard.wsgi.application'
 
 
 # Database
@@ -135,5 +146,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 STATIC_URL = '/static/'
