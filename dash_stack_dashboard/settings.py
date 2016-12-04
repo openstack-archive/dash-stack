@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'security',
     'server',
     'user_profile',
+    'provider',
 ]
 
 MIDDLEWARE = [
