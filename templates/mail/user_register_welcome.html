@@ -1,0 +1,20 @@
+<html>
+<head></head>
+<body>
+
+<p>Hello,</p>
+
+<p>Welcome to our cloud platform.</p>
+
+<h3>Activate your email:</h3>
+
+Please click on following link to activate your account:
+
+<p>
+    <a href="{{ settings.SITE_ROOT_URL }}{{ profile.activation_key }}">
+        {{ profile.activation_key }}
+    </a>
+</p>
+
+</body>
+</html>

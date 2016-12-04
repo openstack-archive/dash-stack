@@ -1,0 +1,62 @@
+{% extends "base_headless.html" %}
+
+{% block title %}<title>dash-stack | Register </title>{% endblock title %}
+
+{% block content %}
+
+<div class="register-box">
+  <div class="register-logo">
+    <a href="{{ SITE_URL }}"><b> - </b>stack</a>
+  </div>
+
+  <div class="register-box-body">
+    <p class="login-box-msg">Register a new membership</p>
+    <form action="/auth/register/" method="POST">
+      <span class="text-red"> {{ form.errors.email.as_text }} </span>
+      <span class="text-red"> {{ form.errors.username.as_text }} </span>
+      <div class="form-group has-feedback">
+        <input name="email" type="email" class="form-control" placeholder="Email">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <span class="text-red"> {{ form.errors.password1.as_text }} </span>
+      <div class="form-group has-feedback">
+        <input name="password1" type="password" class="form-control" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <span class="text-red"> {{ form.errors.password2.as_text }} </span>
+      <div class="form-group has-feedback">
+        <input name="password2" type="password" class="form-control" placeholder="Retype password">
+        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <span class="text-red" style="margin-left: 15px;"> {{ form.errors.tos.as_text }} </span>
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input name="tos" type="checkbox"> I agree to the <a href="#">terms</a>
+            </label>
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+        </div>
+        <!-- /.col -->
+      </div>
+        {% csrf_token %}
+    </form>
+
+    <div class="social-auth-links text-center">
+      <p>- OR -</p>
+      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
+        Facebook</a>
+      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
+        Google+</a>
+    </div>
+
+    <a href="/auth/login" class="text-center">I already have a membership</a>
+  </div>
+  <!-- /.form-box -->
+</div>
+<!-- /.register-box -->
+{% endblock content %}
