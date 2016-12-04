@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Log in</title>
+  {% block title %}<title>AdminLTE 2 | Log in</title>{% endblock title %}
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -24,9 +24,10 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-{% block auth %}
+<body class="hold-transition login-page">
+{% block content %}
 
-{% endblock auth %}
+{% endblock content %}
 
 <!-- jQuery 2.2.3 -->
 <script src="/static/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>

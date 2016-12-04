@@ -1,0 +1,22 @@
+{% extends "base_headless.html" %}
+
+{% block title %}<title>dash-stack | You have been activated </title>{% endblock title %}
+
+{% block content %}
+<div class="register-box">
+  <div class="register-logo">
+    <a href="/"><b> - </b>stack</a>
+  </div>
+
+  <div class="login-box-body">
+    <p class="lead">
+        Your email address has authanticated and
+        your user has been activated.
+    </p>
+    <a href="/" class="text-center">Let's go back to home page.</a><br />
+    <a href="/auth/login/" class="text-center">Take me to login page.</a>
+  </div>
+
+</div>
+
+{% endblock content %}
