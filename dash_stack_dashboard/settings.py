@@ -39,6 +39,9 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/auth/login/'
 
 
+# user profile
+AUTH_PROFILE_MODULE = 'user_profile.Profile'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -82,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django_settings_export.settings_export',
             ],
         },
     },
@@ -153,3 +157,20 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Host for sending e-mail.
+EMAIL_HOST = 'localhost'
+
+# Port for sending e-mail.
+EMAIL_PORT = 25
+
+# Optional SMTP authentication information for EMAIL_HOST.
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+DEFAULT_EMAIL_FROM = 'admin@dash-stack.org'
+
+# fullt qualified hostname or domain. Ex <http://domain.tld/>
+SITE_ROOT_URL = 'http://198.211.127.189/'
