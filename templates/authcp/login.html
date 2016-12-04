@@ -1,8 +1,9 @@
 {% extends "base_headless.html" %}
 
-{% block auth %}
+{% block title %}<title>dash-stack | Log in</title>{% endblock title %}
 
-<body class="hold-transition login-page">
+{% block content %}
+
 <div class="login-box">
   <div class="login-logo">
     <a href="{{ SITE_URL }}"><b> - </b>stack</a>
@@ -24,7 +25,7 @@
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> Remember Me
+              <input name="remember_me" type="checkbox"> Remember Me
             </label>
           </div>
         </div>
@@ -52,4 +53,4 @@
   <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
-{% endblock auth %}
+{% endblock content %}
