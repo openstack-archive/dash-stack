@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'dash-stack',
-    '198.211.127.189',
+    '127.0.0.1',
 ]
 
 # login url
