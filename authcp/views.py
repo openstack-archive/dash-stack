@@ -1,5 +1,7 @@
 import random, hashlib, datetime
 
+from oslo_i18n import translate as _
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.mail import EmailMultiAlternatives
@@ -27,6 +29,7 @@ def send_email(con,subject,email_to,email_from):
 def index(request):
     return render(request, "authcp/index.html", {})
 
+# user registration
 def register_user(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -46,7 +49,7 @@ def register_user(request):
                                                                 "%Y-%m-%d %H:%M:%S")
             profile.save()
             send_email({'u': u, 'profil': profile},
-                       'Welcome to our cloud',
+                       _('Welcome to our cloud'),
                        u.email,
                        settings.DEFAULT_EMAIL_FROM,
                        )
@@ -59,9 +62,11 @@ def register_user(request):
         form = UserRegisterForm()
     return render(request, 'authcp/register.html', {'form': form})
 
+# user registration success page
 def register_success(request):
     return render(request, 'authcp/success.html', {})
 
+# user activation
 def activation(request, key):
     activation_expired=False
     already_active=False

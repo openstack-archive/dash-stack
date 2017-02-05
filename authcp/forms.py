@@ -1,22 +1,23 @@
 import re
+from oslo_i18n import translate as _
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
 from django import forms
 
 class UserRegisterForm(forms.Form):
-    email = forms.EmailField(label='Email')
+    email = forms.EmailField(label=_('Email'))
     password1 = forms.CharField(
-        label='Password',
+        label=_('Password'),
         widget=forms.PasswordInput(),
     )
     password2 = forms.CharField(
-        label='Password (Again)',
+        label=_('Password (Again)'),
         widget=forms.PasswordInput(),
     )
     tos = forms.BooleanField(
         required=True,
-        error_messages={'required': 'You must accept TOS.'}
+        error_messages={'required': _('You must accept TOS.')}
     )
 
     def clean_email(self):
@@ -25,7 +26,7 @@ class UserRegisterForm(forms.Form):
             User.objects.get(email=email)
         except ObjectDoesNotExist:
             return email
-        raise forms.ValidationError('Email address is not available.')
+        raise forms.ValidationError(_('Email address is not available.'))
 
     def clean_password2(self):
         if 'password1' in self.cleaned_data:
@@ -33,4 +34,4 @@ class UserRegisterForm(forms.Form):
             password2 = self.cleaned_data['password2']
             if password1 == password2:
                 return password2
-        raise forms.ValidationError('Password do not match.')
+        raise forms.ValidationError(_('Password do not match.'))
