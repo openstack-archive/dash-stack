@@ -1,0 +1,8 @@
+Code-Review+2: Ferhat Ozkasgarli <ozkasgarli@gmail.com>
+Workflow+1: Ferhat Ozkasgarli <ozkasgarli@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sun, 05 Feb 2017 20:56:47 +0000
+Reviewed-on: https://review.openstack.org/429412
+Project: openstack/dash-stack
+Branch: refs/heads/master
