@@ -111,7 +111,7 @@ WSGI_APPLICATION = 'dash_stack_dashboard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dash-stack',
+        'NAME': 'dash_stack',
         'USER': 'dash-stack',
         'PASSWORD': 'password',
         'HOST': 'localhost',
