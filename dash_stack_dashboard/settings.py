@@ -28,7 +28,11 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'dash-stack',
     '127.0.0.1',
+    'demo.dash-stack.com'
 ]
+
+# fullt qualified hostname or domain. Ex <http://domain.tld/>
+SITE_ROOT_URL = 'http://demo.dash-stack.com/'
 
 # login url
 LOGIN_URL = '/auth/login/'
@@ -77,7 +81,7 @@ ROOT_URLCONF = 'dash_stack_dashboard.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates',],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -171,6 +175,3 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 DEFAULT_EMAIL_FROM = 'admin@dash-stack.org'
-
-# fullt qualified hostname or domain. Ex <http://domain.tld/>
-SITE_ROOT_URL = 'http://198.211.127.189/'

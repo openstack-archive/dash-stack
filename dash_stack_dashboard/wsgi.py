@@ -1,16 +1,12 @@
-"""
-WSGI config for dash_stack project.
+import os, sys
 
-It exposes the WSGI callable as a module-level variable named ``application``.
 
-For more information on this file, see
-https://docs.djangoproject.com/en/1.10/howto/deployment/wsgi/
-"""
+sys.path.append('/usr/share/dash-stack/dash_stack_dashboard')
 
-import os
+sys.path.append('/usr/share/dash-stack/venv/lib/python2.7/site-packages')
+
 
 from django.core.wsgi import get_wsgi_application
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dash_stack_dashboard.settings")
 
 application = get_wsgi_application()
