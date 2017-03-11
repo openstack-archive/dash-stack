@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
 ]
 
 # fullt qualified hostname or domain. Ex <http://domain.tld/>
-SITE_ROOT_URL = 'http://demo.dash-stack.com/'
+SITE_ROOT_URL = 'http://127.0.0.1:8000'
 
 # login url
 LOGIN_URL = '/auth/login/'
@@ -116,6 +116,10 @@ DATABASES = {
         'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'init_command': 'SET innodb_strict_mode=1',
+        },
     }
 }
 
@@ -140,8 +144,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.10/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -154,8 +156,6 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
@@ -169,10 +169,10 @@ STATIC_URL = '/static/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Host for sending e-mail.
-EMAIL_HOST = 'localhost'
+EMAIL_HOST = '35.156.60.241'
 
 # Port for sending e-mail.
-EMAIL_PORT = 25
+EMAIL_PORT = 587
 
 # Optional SMTP authentication information for EMAIL_HOST.
 EMAIL_HOST_USER = ''

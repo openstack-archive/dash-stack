@@ -1,6 +1,7 @@
-import random, hashlib, datetime
+import random, hashlib
 
 from oslo_i18n import translate as _
+from datetime import timedelta
 
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -45,17 +46,17 @@ def register_user(request):
             usernamesalt=form.cleaned_data['email']
             profile=Profile.objects.get(user_id=u.id)
             profile.activation_key=hashlib.sha1(salt+usernamesalt).hexdigest()
-            profile.key_expires=datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(days=2),
-                                                                "%Y-%m-%d %H:%M:%S")
+            profile.key_expires=timezone.now() + timedelta(days=2)
             profile.save()
-            send_email({'u': u, 'profil': profile},
+            site_url=settings.SITE_ROOT_URL
+            send_email({'u': u, 'profile': profile, 'site_url': site_url},
                        _('Welcome to our cloud'),
                        u.email,
                        settings.DEFAULT_EMAIL_FROM,
                        )
             return render(request,
                           'authcp/success.html',
-                          {'u': u, 'profil': profile})
+                          {'u': u, 'profile': profile})
         else:
             print(form.errors)
     else:
