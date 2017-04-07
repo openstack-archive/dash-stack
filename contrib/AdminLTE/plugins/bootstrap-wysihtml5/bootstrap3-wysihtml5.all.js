@@ -7107,7 +7107,7 @@ wysihtml5.dom.replaceWithChildNodes = function(node) {
         return element;
       },
 
-      // initiates an allready existent contenteditable
+      // initiates an already existent contenteditable
       _bindElement: function(contentEditable) {
         contentEditable.className = (contentEditable.className && contentEditable.className != '') ? contentEditable.className + " wysihtml5-sandbox" : "wysihtml5-sandbox";
         this._loadElement(contentEditable, true);
