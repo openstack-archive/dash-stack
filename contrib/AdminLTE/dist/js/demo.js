@@ -265,7 +265,7 @@
   /**
    * Get a prestored setting
    *
-   * @param String name Name of of the setting
+   * @param String name Name of the setting
    * @returns String The value of the setting | null
    */
   function get(name) {
